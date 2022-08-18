@@ -4,6 +4,9 @@ const ModuleFederationPlugin =
 const path = require("path");
 const deps = require("./package.json").dependencies;
 
+const { BUNDLE_ANALYZER, NODE_ENV = "" } = process.env;
+const isProd = NODE_ENV === "production";
+
 module.exports = {
   entry: "./src/index",
   mode: "development",
@@ -46,7 +49,9 @@ module.exports = {
       name: "dashboard",
       filename: "remoteEntry.js",
       remotes: {
-        widgets: "widgets@http://localhost:3002/remoteEntry.js",
+        widgets: isProd
+          ? "widgets@https://ruslauz.github.io/MF-Widgets/remoteEntry.js"
+          : "widgets@http://localhost:3002/remoteEntry.js",
       },
       exposes: {
         "./App": "./src/App",
