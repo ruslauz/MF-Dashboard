@@ -49,9 +49,10 @@ module.exports = {
       name: "dashboard",
       filename: "remoteEntry.js",
       remotes: {
-        widgets: isProd
-          ? "widgets@https://ruslauz.github.io/MF-Widgets/remoteEntry.js"
-          : "widgets@http://localhost:3002/remoteEntry.js",
+        // widgets: isProd
+        //   ? "widgets@https://ruslauz.github.io/MF-Widgets/remoteEntry.js"
+        //   : "widgets@http://localhost:3002/remoteEntry.js",
+        widgets: "widgets@https://ruslauz.github.io/MF-Widgets/remoteEntry.js",
       },
       exposes: {
         "./App": "./src/App",
