@@ -1,0 +1,30 @@
+:global {
+    .react-grid-item {
+        border: 1px dashed lightgray;
+        border-radius: 6px;
+    }
+
+    .react-grid-item>.react-resizable-handle.react-resizable-handle-se {
+        bottom: 8px !important;
+        right: 8px !important;
+    }
+}
+
+.main {
+    display: flex;
+    /* padding: 32px; */
+    /* height: 100vh; */
+    /* column-gap: 16px; */
+    overflow: hidden;
+}
+
+.close {
+    position: absolute;
+    right: 8;
+    top: 8;
+    color: var(--gray-300);
+
+    &:hover {
+        color: var(--gray-400) !important;
+    }
+}
