@@ -1,0 +1,113 @@
+<html><head><script defer="defer" src="https://code.highcharts.com/highcharts.js"></script><script defer="defer" src="https://code.highcharts.com/highcharts-more.js"></script><script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script defer="defer">const helper = {
+      formatThousands(number, divider) {
+        const minNumberToFormat = 1000;
+        if (number < minNumberToFormat) {
+          return number;
+        }
+
+        const num = number.toString();
+        const thousLength = Math.floor(num.length / 3);
+        const thousArr = [];
+        thousArr.length = thousLength + 1;
+        let end = parseInt(num.length, 10);
+        const numArr = _.map(
+          thousArr,
+          () => {
+            let col;
+            let start;
+            if (end > 3) {
+              start = end - 3;
+              col = 3;
+            } else {
+              start = 0;
+              col = end;
+            }
+
+            const str = num.substr(start, col);
+            end -= 3;
+            return str;
+          }
+        );
+
+        return _.compact(numArr).reverse().join(divider || ',');
+      },
+
+      roundNum(num) {
+        const parsedNum = parseInt(num, 10);
+
+        if (Number.isNaN(parsedNum)) {
+          return 0;
+        }
+        if (Math.abs(parsedNum) < 1000) {
+          return parsedNum;
+        } if (Math.abs(parsedNum) < 1000000) {
+          return `${(parsedNum / 1000).toFixed(1)}K`;
+        } if (Math.abs(parsedNum) < 1000000000) {
+          return `${(parsedNum / 1000000).toFixed(1)}M`;
+        }
+        return `${(parsedNum / 1000000000).toFixed(1)}B`;
+      },
+
+      formatDuration(duration) {
+        const secInHour = 60 * 60;
+        const hours = Math.floor(duration / secInHour);
+        const minutes = Math.floor((duration % secInHour) / 60);
+        const seconds = duration % secInHour % 60;
+
+        const padZero = value => value < 10
+          ? `0${value}`
+          : value;
+
+        return `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+      },
+
+      getMaxLegendLabel(elem) {
+        let maxWidthLabel = helper.getMaxElemWidthInList(elem, '.chart-legend-label');
+        let maxWidthValue = helper.getMaxLegendValue(elem);
+        const elemWidth = helper.getElementWidth(elem);
+        const chartLineWidth = helper.getElementWidth(elem.querySelector('.chart-legend-line'));
+
+        maxWidthLabel = maxWidthLabel > elemWidth ? maxWidthLabel : elemWidth;
+        maxWidthValue = maxWidthValue > elemWidth ? maxWidthValue : elemWidth;
+
+        if ((maxWidthLabel + maxWidthValue) > chartLineWidth) {
+          maxWidthLabel = chartLineWidth;
+        }
+
+        return maxWidthLabel;
+      },
+
+      getMaxElemWidthInList(elem, className) {
+        const widthArray = [];
+        const lines = elem.querySelectorAll(className);
+
+        lines.forEach(item => widthArray.push(helper.getElementWidth(item)));
+
+        return Math.max(0, ...widthArray);
+      },
+
+      getMaxLegendValue(elem) {
+        return helper.getMaxElemWidthInList(elem, '.chart-legend-value');
+      },
+
+      getLegendLineWidth(elem) {
+        return helper.getMaxElemWidthInList(elem, '.chart-legend-line');
+      },
+
+      getElementWidth(elem) {
+        return parseFloat(getComputedStyle(elem, null).width.replace('px', ''));
+      },
+
+      getElementHeight(elem) {
+        return parseFloat(getComputedStyle(elem, null).height.replace('px', ''));
+      },
+    };
+
+    // set helper to window manually for puppeteer
+    if (window) {
+      window.helper = helper;
+    }
+
+    if (typeof module !== 'undefined' && module !== null) {
+      module.exports = helper;
+    }</script><link rel="icon" href="favicon.ico"><script defer="defer" src="main.js"></script><script defer="defer" src="remoteEntry.js"></script></head><body><div id="root"></div></body></html>
